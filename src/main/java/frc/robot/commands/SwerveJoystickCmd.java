@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.QuickAccessConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class SwerveJoystickCmd extends Command {
@@ -43,10 +44,18 @@ public class SwerveJoystickCmd extends Command {
     @Override
     public void execute() {
 
-        // 1. Get real-time joystick inputs
-        double xSpeed = DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? xSpdFunction.get() : -xSpdFunction.get();
-        double ySpeed = DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? ySpdFunction.get() : -ySpdFunction.get();
-        double turningSpeed = turningSpdFunction.get();
+        double xSpeed, ySpeed, turningSpeed;
+
+        // 1. Get real-time joystick inputs for field relative
+        if (QuickAccessConstants.isFieldRelative) {
+            xSpeed = DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? xSpdFunction.get() : -xSpdFunction.get();
+            ySpeed = DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? ySpdFunction.get() : -ySpdFunction.get();
+            turningSpeed = turningSpdFunction.get();
+        } else {
+            xSpeed = xSpdFunction.get() * DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
+            ySpeed = ySpdFunction.get() * DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
+            turningSpeed = turningSpdFunction.get() * DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;  
+        }
 
         // 2. Apply deadband
         xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;

@@ -304,7 +304,6 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
 
-
     public Command zeroHeading() {
         System.out.println("===== Gyro Reset =====");
         return Commands.runOnce(() -> {
@@ -322,12 +321,10 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
 
-
     public Command zeroCoords() {
         System.out.println("===== Coords Reset =====");
         return Commands.runOnce(() -> resetPose(new Pose2d(0,0,getRotation2d())));
     }
-
 
 
     public Command zeroEverything() {
@@ -348,7 +345,6 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
 
-
     public Pose2d getPose() {
         return m_poseEstimator.getEstimatedPosition();
     }
@@ -356,7 +352,6 @@ public class SwerveSubsystem extends SubsystemBase {
     public void resetPose(Pose2d pose) {
         m_poseEstimator.resetPose(pose);
     }
-
 
 
     public ChassisSpeeds getRobotRelativeSpeeds() {
@@ -371,7 +366,6 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
 
-
     public void driveRobotRelative(ChassisSpeeds speed ) {
         //ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(speed, 0.02); is this needed?
         SwerveModuleState states[] = DriveConstants.kDriveKinematics.toSwerveModuleStates(speed);
@@ -379,12 +373,9 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
 
-
     public ChassisSpeeds getChassisSpeeds() {
         return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
     }
-
-
 
     public double getHeading() {
         // float angle = m_gyro.getPitch();
@@ -393,11 +384,10 @@ public class SwerveSubsystem extends SubsystemBase {
         // return (DriveConstants.kGyroReversed ? dAngle * -1 : dAngle);
     }
 
+
     public Rotation2d getRotation2d() {
         return Rotation2d.fromDegrees(getHeading());
     }
-
-
 
     public void stopModules() {
         frontLeft.stop();
@@ -406,21 +396,13 @@ public class SwerveSubsystem extends SubsystemBase {
         backRight.stop();
     }
 
-
-
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
         frontLeft.setDesiredState(desiredStates[0]);
         frontRight.setDesiredState(desiredStates[1]);
         backLeft.setDesiredState(desiredStates[2]);
         backRight.setDesiredState(desiredStates[3]);
-        // frontLeft.setDesiredState(desiredStates[2]);
-        // frontRight.setDesiredState(desiredStates[1]);
-        // backLeft.setDesiredState(desiredStates[0]);
-        // backRight.setDesiredState(desiredStates[3]);
     }
-
-
 
     public SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] newModuleStates = {

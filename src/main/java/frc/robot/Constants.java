@@ -8,6 +8,8 @@ public class Constants {
     public static final class QuickAccessConstants {
         public static final boolean swerveEnabled = true;
         public static final boolean manipulatorsEnabled = true;
+        public static final boolean isFieldRelative = true;
+        public static final boolean isSoloDrive = true;
     }
     
     public static final class ModuleConstants {
